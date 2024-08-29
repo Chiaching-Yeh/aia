@@ -1,6 +1,6 @@
-package com.systex.support.pebble;
+package com.systex.demo.support.pebble;
 
-import com.systex.support.core.ClassLoaderCore;
+import com.systex.demo.support.core.ClassLoaderCore;
 import io.pebbletemplates.pebble.loader.Loader;
 import jakarta.servlet.ServletContext;
 

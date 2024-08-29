@@ -1,4 +1,4 @@
-package com.systex.support;
+package com.systex.demo.support;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -13,10 +13,11 @@ import java.time.format.DecimalStyle;
 import java.util.Calendar;
 import java.util.Locale;
 
-import com.github.javaparser.utils.Log;
+import lombok.extern.slf4j.Slf4j;
 import org.jooq.lambda.tuple.Tuple;
 import org.jooq.lambda.tuple.Tuple3;
 
+@Slf4j
 public final class LocalDateTimeSupport {
 	
 	public static String formatTime(String timestamp, int index) {
@@ -158,7 +159,7 @@ public final class LocalDateTimeSupport {
 				return DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(localDateTime);
 			}
 		}catch (Exception ex) {
-			Log.error(ex);
+//			Log.error(ex);
 		}
 		return "";
     }
@@ -228,7 +229,7 @@ public final class LocalDateTimeSupport {
 
 			return localDateTimeBefore.isBefore(localDateTimeAfter);
 		}catch (Exception ex){
-			Log.error(ex);
+//			Log.error(ex);
 		}
 		return false;
 	}

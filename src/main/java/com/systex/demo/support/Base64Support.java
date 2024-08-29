@@ -1,4 +1,4 @@
-package com.systex.support;
+package com.systex.demo.support;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;

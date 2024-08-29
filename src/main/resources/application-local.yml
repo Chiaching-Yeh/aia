@@ -12,7 +12,7 @@ server:
 spring:
 
   application:
-    name: Backend
+    name: aia
 
   aop:
     auto: true
@@ -25,10 +25,10 @@ spring:
   datasource:
     name: testDB
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/testdb?useSSL=false&serverTimezone=Asia/Taipei&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://127.0.0.1:1433/e9603?useSSL=false&serverTimezone=Asia/Taipei&allowPublicKeyRetrieval=true
     driverClassName: com.mysql.cj.jdbc.Driver
-    jdbcUrl: jdbc:mysql://127.0.0.1:3306/testdb?useSSL=false&serverTimezone=Asia/Taipei&allowPublicKeyRetrieval=true
-    username: root
+    jdbcUrl: jdbc:mysql://127.0.0.1:1433/e9603?useSSL=false&serverTimezone=Asia/Taipei&allowPublicKeyRetrieval=true
+    username: sa
     password: asas2826
     hikari:
       pool-name: ManageHikariCP

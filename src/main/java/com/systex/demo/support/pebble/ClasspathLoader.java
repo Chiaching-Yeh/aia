@@ -1,4 +1,4 @@
-package com.systex.support.pebble;
+package com.systex.demo.support.pebble;
 
 import io.pebbletemplates.pebble.error.LoaderException;
 import io.pebbletemplates.pebble.loader.Loader;

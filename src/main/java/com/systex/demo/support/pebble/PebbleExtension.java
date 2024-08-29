@@ -1,10 +1,10 @@
-package com.systex.support.pebble;
+package com.systex.demo.support.pebble;
 
 import java.util.List;
 import java.util.Map;
 
-import com.systex.support.Lists;
-import com.systex.support.Maps;
+import com.systex.demo.support.Lists;
+import com.systex.demo.support.Maps;
 import io.pebbletemplates.pebble.extension.AbstractExtension;
 import io.pebbletemplates.pebble.extension.Filter;
 import io.pebbletemplates.pebble.extension.Function;
@@ -50,7 +50,6 @@ public class PebbleExtension extends AbstractExtension {
         if (map == null) {
             map = Maps.newHashMap();
         }
-        map.put(AreaDetailDataFunction.FUNCTION_NAME, new AreaDetailDataFunction());
         map.put(FileNameImageFunction.FUNCTION_NAME, new FileNameImageFunction());
         map.put(MessageSourceFunction.FUNCTION_NAME, new MessageSourceFunction(this.messageSource));
         map.put(HasErrorsFunction.FUNCTION_NAME, new HasErrorsFunction());

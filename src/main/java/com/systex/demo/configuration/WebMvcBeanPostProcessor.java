@@ -1,4 +1,4 @@
-package com.systex.ocac.test.configuration;
+package com.systex.demo.configuration;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
@@ -17,12 +17,12 @@ public class WebMvcBeanPostProcessor implements BeanPostProcessor, Ordered {
         if (bean instanceof RequestMappingHandlerAdapter) {
             RequestMappingHandlerAdapter adapter = (RequestMappingHandlerAdapter) bean;
             adapter.setSynchronizeOnSession(true);
-            Log.info("Enable SynchronizeOnSession on RequestMappingHandlerAdapter");
+//            Log.info("Enable SynchronizeOnSession on RequestMappingHandlerAdapter");
         }
         if (bean instanceof UrlBasedViewResolver) {
             UrlBasedViewResolver urlBasedViewResolver = (UrlBasedViewResolver) bean;
             urlBasedViewResolver.setRedirectHttp10Compatible(false);
-            Log.info("Disable RedirectHttp10Compatible on {}", bean.getClass());
+//            Log.info("Disable RedirectHttp10Compatible on {}", bean.getClass());
         }
         return bean;
     }

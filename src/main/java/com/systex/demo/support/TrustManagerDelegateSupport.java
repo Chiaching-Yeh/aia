@@ -1,4 +1,4 @@
-package com.systex.support;
+package com.systex.demo.support;
 
 import javax.net.ssl.X509TrustManager;
 import java.security.cert.CertificateException;

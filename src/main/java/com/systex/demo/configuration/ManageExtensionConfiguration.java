@@ -1,11 +1,12 @@
-package manage.config;
+package com.systex.demo.configuration;
 
-import com.systex.support.FunctionLogSupport;
-import com.systex.support.Snowflake;
-import com.systex.support.pebble.ClasspathLoader;
-import com.systex.support.pebble.PebbleExtension;
+
+import com.systex.demo.support.FunctionLogSupport;
+import com.systex.demo.support.Snowflake;
+import com.systex.demo.support.pebble.PebbleExtension;
 import io.pebbletemplates.pebble.PebbleEngine;
 import io.pebbletemplates.pebble.extension.Extension;
+import io.pebbletemplates.pebble.loader.ClasspathLoader;
 import io.pebbletemplates.spring.servlet.PebbleViewResolver;
 import jakarta.servlet.ServletContext;
 import lombok.extern.slf4j.Slf4j;
@@ -53,13 +54,13 @@ public class ManageExtensionConfiguration implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
     	
-    	FunctionLogSupport.start("ManageExtensionConfiguration.addResourceHandlers");
+//    	FunctionLogSupport.start("ManageExtensionConfiguration.addResourceHandlers");
     	
         registry.addResourceHandler("/static/**").addResourceLocations("/WEB-INF/classes/static/");
         
         registry.addResourceHandler("/favicon.ico").addResourceLocations("/WEB-INF/classes/favicon.ico").setCachePeriod(24 * 60 * 60);
         
-        FunctionLogSupport.end("ManageExtensionConfiguration.addResourceHandlers");
+//        FunctionLogSupport.end("ManageExtensionConfiguration.addResourceHandlers");
         
     }
 

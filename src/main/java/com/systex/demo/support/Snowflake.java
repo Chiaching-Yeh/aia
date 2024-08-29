@@ -1,4 +1,4 @@
-package com.systex.support;
+package com.systex.demo.support;
 
 import java.net.NetworkInterface;
 import java.security.SecureRandom;

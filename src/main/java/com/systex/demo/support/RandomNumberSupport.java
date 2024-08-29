@@ -1,4 +1,4 @@
-package com.systex.support;
+package com.systex.demo.support;
 
 import java.security.SecureRandom;
 import org.apache.commons.codec.binary.Base32;

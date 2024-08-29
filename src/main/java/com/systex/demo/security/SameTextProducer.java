@@ -1,4 +1,4 @@
-package manage.security;
+package com.systex.demo.security;
 
 import cn.apiclub.captcha.text.producer.TextProducer;
 

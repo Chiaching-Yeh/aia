@@ -1,4 +1,4 @@
-package com.systex.support.core;
+package com.systex.demo.support.core;
 
 import java.util.Arrays;
 

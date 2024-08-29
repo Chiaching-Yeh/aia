@@ -1,4 +1,4 @@
-package com.systex.support.core;
+package com.systex.demo.support.core;
 
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -11,7 +11,7 @@ public class ClassLoaderCore {
 
     public static String getClassPathString() {
 
-        java.lang.ClassLoader classLoader = ClassLoaderCore.class.getClassLoader();
+        ClassLoader classLoader = ClassLoaderCore.class.getClassLoader();
 
         // Get the URL for the classpath
         URL url = classLoader.getResource("");
@@ -37,7 +37,7 @@ public class ClassLoaderCore {
 
     public static Path getClassPath(String prefix) {
 
-        java.lang.ClassLoader classLoader = ClassLoaderCore.class.getClassLoader();
+        ClassLoader classLoader = ClassLoaderCore.class.getClassLoader();
 
         // Get the URL for the classpath
         URL url = classLoader.getResource(prefix);
@@ -68,7 +68,7 @@ public class ClassLoaderCore {
 
     public static Path getClassResourcePath(String templateName) {
 
-        java.lang.ClassLoader classLoader = ClassLoaderCore.class.getClassLoader();
+        ClassLoader classLoader = ClassLoaderCore.class.getClassLoader();
 
         URL url = classLoader.getResource(templateName);
         if (url != null) {
@@ -84,7 +84,7 @@ public class ClassLoaderCore {
 
     public static InputStream getClassResource(String templateName) {
 
-        java.lang.ClassLoader classLoader = ClassLoaderCore.class.getClassLoader();
+        ClassLoader classLoader = ClassLoaderCore.class.getClassLoader();
 
         InputStream inputStream = classLoader.getResourceAsStream(templateName);
 
