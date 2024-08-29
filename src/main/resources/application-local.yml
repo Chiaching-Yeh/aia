@@ -1,0 +1,125 @@
+server:
+  servlet:
+    context-parameters:
+      defaultHtmlEscape: true
+    session:
+      timeout: 40m
+      cookie:
+        http-only: true
+      tracking-modes: cookie
+  forward-headers-strategy: NATIVE
+
+spring:
+
+  application:
+    name: Backend
+
+  aop:
+    auto: true
+    proxy-target-class: true
+
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.gson.GsonAutoConfiguration
+
+  datasource:
+    name: testDB
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/testdb?useSSL=false&serverTimezone=Asia/Taipei&allowPublicKeyRetrieval=true
+    driverClassName: com.mysql.cj.jdbc.Driver
+    jdbcUrl: jdbc:mysql://127.0.0.1:3306/testdb?useSSL=false&serverTimezone=Asia/Taipei&allowPublicKeyRetrieval=true
+    username: root
+    password: asas2826
+    hikari:
+      pool-name: ManageHikariCP
+      auto-commit: true
+      maximum-pool-size: 32
+      max-lifetime: 1800000
+      connection-timeout: 30000
+      transaction-isolation: TRANSACTION_READ_COMMITTED
+
+  devtools:
+    livereload:
+      enabled: false
+    restart:
+      enabled: true
+
+  http:
+    encoding:
+      force: true
+
+  jta:
+    enabled: false
+
+  mvc:
+    static-path-pattern: /static/**
+
+  main:
+    allow-circular-references: true
+
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 55MB
+
+app:
+  node:
+    id: ${APP_NODE_ID:1}
+
+  mail:
+    domain: "motc.gov.tw"
+
+  mailserver: '{
+          "mailserver": {
+              "server": "smtp.gmail.com",
+              "mserverport": "587",
+              "msender": "a0919319856@gmail.com",
+              "mpass": "npwpquopcbzcydsr",
+              "mailsender": "npa",
+              "author": "true"
+
+          }
+      }'
+
+  config:
+    path: "config.yml"
+
+  pebble:
+    path: ""
+
+  check:
+    apppath: "D:/SystexProject_NCC/bcb16222020005/Frontend/target/classes/templates/module/app/"
+
+  ssg:
+    path: "D:/SystexProject_NCC/bcb16222020005/Upload/ssg/"
+
+  upload:
+    path: "D:/SystexProject_NCC/bcb16222020005/Upload/download/"
+    temppath: "D:/SystexProject_NCC/bcb16222020005/Upload/download/origin/"
+    filepath: "D:/SystexProject_NCC/bcb16222020005/Upload/download/doc/"
+    picpath: "D:/SystexProject_NCC/bcb16222020005/Upload/download/pic/"
+    mediapath: "D:/SystexProject_NCC/bcb16222020005/Upload/download/media/"
+    transpdf: "D:/SystexProject_NCC/bcb16222020005/Upload/download/pdf/"
+    menufilepath: "D:/SystexProject_NCC/bcb16222020005/Upload/download/menu/"
+    fckfilepath: "D:/SystexProject_NCC/bcb16222020005/Upload/userfiles/file"
+    fckpicpath: "D:/SystexProject_NCC/bcb16222020005/Upload/userfiles/image"
+
+  preview:
+    path: "http://localhost:8001"
+  domain:
+    path: "http://localhost:8001"
+  manageDomain:
+    path: "http://localhost:8002"
+  openData:
+    FrontEndPath: "https://data.nat.gov.tw/"
+    BackEndPath: "https://cms.data.nat.gov.tw/"
+    apiKey: "58baeb50-42b2-4ac2-822f-66b3db29023a"
+  scheduleJob:
+    path: "https://opendataAPI.ncc.gov.tw/"
+
+  egov:
+    production: false
+    apiKey: "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzbiI6NTAsImlwIjoiW1wiMTUuMjIwLjg1LjExNlwiLFwiMTUuMjIwLjg1LjI1NFwiLFwiMTUuMjIwLjg1LjE1MlwiLFwiMTUuMjIwLjg1LjExNFwiXSIsIm9pZCI6IjIuMTYuODg2LjEwMS4yMDAwMy4yMDA1NiIsInZlcmlmaWNhdGlvbmNvZGUiOiJCbm5mRlljR0EwM3poZjV6V3NvYy84a3l5YThFdzdmViJ9.J9TN2dEufYfuHUCTv3uodZ5ncQWGLFBuysERpzV8IUFkFgr-t87OGfbPUjfavaLa2SS-besyn2eFbH3Fh4HBHA"
+    baseUrl: "https://mgr.www.gov.tw/GovService/api/v2/GovService/"
+    apiKeyTest: "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzbiI6NTAsImlwIjoiW1wiMTUuMjIwLjg1LjExNlwiLFwiMTUuMjIwLjg1LjI1NFwiLFwiMTUuMjIwLjg1LjE1MlwiLFwiMTUuMjIwLjg1LjExNFwiXSIsIm9pZCI6IjIuMTYuODg2LjEwMS4yMDAwMy4yMDA1NiIsInZlcmlmaWNhdGlvbmNvZGUiOiJCbm5mRlljR0EwM3poZjV6V3NvYy84a3l5YThFdzdmViIsImR1ZWRhdGUiOiJcL0RhdGUoMTczNTY2MDc0MDAwMClcLyJ9.rYHhJZIx7PeyEm7jXRqo0Dazjr4yUlr2Re3NrAq1goSYjTUwHG0KlBeUKJTZZvG2dhVCqaSs-3KzUWpGMdPlXA"
+    baseUrlTest: "https://mgrdev.nat.gov.tw/GovService/api/v2/GovService/"
