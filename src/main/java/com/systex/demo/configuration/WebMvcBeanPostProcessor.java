@@ -8,8 +8,9 @@ import org.springframework.core.Ordered;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
-@Slf4j
+
 @Configuration
+@Slf4j
 public class WebMvcBeanPostProcessor implements BeanPostProcessor, Ordered {
 
     @Override
@@ -17,12 +18,12 @@ public class WebMvcBeanPostProcessor implements BeanPostProcessor, Ordered {
         if (bean instanceof RequestMappingHandlerAdapter) {
             RequestMappingHandlerAdapter adapter = (RequestMappingHandlerAdapter) bean;
             adapter.setSynchronizeOnSession(true);
-//            Log.info("Enable SynchronizeOnSession on RequestMappingHandlerAdapter");
+            log.info("Enable SynchronizeOnSession on RequestMappingHandlerAdapter");
         }
         if (bean instanceof UrlBasedViewResolver) {
             UrlBasedViewResolver urlBasedViewResolver = (UrlBasedViewResolver) bean;
             urlBasedViewResolver.setRedirectHttp10Compatible(false);
-//            Log.info("Disable RedirectHttp10Compatible on {}", bean.getClass());
+            log.info("Disable RedirectHttp10Compatible on {}", bean.getClass());
         }
         return bean;
     }

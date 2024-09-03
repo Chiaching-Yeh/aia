@@ -20,7 +20,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Slf4j
 @Component
 @Configuration
-public class ManageExtensionConfiguration implements WebMvcConfigurer {
+public class AIAExtensionConfiguration implements WebMvcConfigurer {
 
     @Value("${app.pebble.path}")
     private String pebblePath;
@@ -33,7 +33,7 @@ public class ManageExtensionConfiguration implements WebMvcConfigurer {
     @Bean
     public PebbleViewResolver viewResolver(ServletContext servletContext) {
 
-    	FunctionLogSupport.start("ManageExtensionConfiguration.viewResolver");
+    	FunctionLogSupport.start("AIAExtensionConfiguration.viewResolver");
 
         PebbleViewResolver viewResolver = new PebbleViewResolver(pebbleEngine(servletContext));
 
@@ -41,7 +41,7 @@ public class ManageExtensionConfiguration implements WebMvcConfigurer {
         viewResolver.setSuffix(".peb,.html");
         viewResolver.setServletContext(servletContext);
 
-        FunctionLogSupport.end("ManageExtensionConfiguration.viewResolver");
+        FunctionLogSupport.end("AIAExtensionConfiguration.viewResolver");
 
         return viewResolver;
     }
@@ -54,13 +54,13 @@ public class ManageExtensionConfiguration implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
     	
-//    	FunctionLogSupport.start("ManageExtensionConfiguration.addResourceHandlers");
+    	FunctionLogSupport.start("AIAExtensionConfiguration.addResourceHandlers");
     	
         registry.addResourceHandler("/static/**").addResourceLocations("/WEB-INF/classes/static/");
         
         registry.addResourceHandler("/favicon.ico").addResourceLocations("/WEB-INF/classes/favicon.ico").setCachePeriod(24 * 60 * 60);
         
-//        FunctionLogSupport.end("ManageExtensionConfiguration.addResourceHandlers");
+        FunctionLogSupport.end("AIAExtensionConfiguration.addResourceHandlers");
         
     }
 
