@@ -15,6 +15,10 @@ spring:
   application:
     name: aia
 
+  spring:
+    security:
+      enabled: false
+
   aop:
     auto: true
     proxy-target-class: true
