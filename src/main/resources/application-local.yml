@@ -70,7 +70,8 @@ line:
     channel-secret: "733a19feb92498ca3e890ac9869fed65"
     userId: "Udb7d78437f21b1539430078df9603461"
     handler:
-      path: "https://charlieaia-h6cyeraxdsb0huaj.japaneast-01.azurewebsites.net/callback"
+      enabled: true
+      path: "/callback"
 
   login:
     channel:
