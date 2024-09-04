@@ -59,6 +59,25 @@ spring:
       max-file-size: 50MB
       max-request-size: 55MB
 
+openai:
+  api:
+    key: "sk-63iPahcgh_m5_E0w-mFrgk153YkmtW8569DpDyMOaPT3BlbkFJRv2hWy45FB-TP7Vj-CarzGLbGT32xKNwNOwdNls7AA"
+  organizationID: "org-7mQpXE2FKJ1Pfqe0F8Kc3Sja"
+
+line:
+  bot:
+    channel-token: "9u+LjgMDJ+4dWJxp10y+CkdvVv6hdhnbODnKl1ZQFXnuwLzO75m245iEJS3Wq2VYk9J5WRO5qwUI17kubyyZLZnPY5LYqp8B/hwr67flS5IodO04KmkDNUxk1oGFqrbWAaaWIPbm/1i2n0jsgzak9gdB04t89/1O/w1cDnyilFU="
+    channel-secret: "733a19feb92498ca3e890ac9869fed65"
+    userId: "Udb7d78437f21b1539430078df9603461"
+    handler:
+      path: "https://charlieaia-h6cyeraxdsb0huaj.japaneast-01.azurewebsites.net/callback"
+
+  login:
+    channel:
+      channelId: ""
+      channel-secret: ""
+      callbackUrl: ""
+
 app:
   node:
     id: ${APP_NODE_ID:1}
