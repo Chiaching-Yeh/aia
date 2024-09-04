@@ -28,42 +28,6 @@ public class LineMessageHandlerController {
     @Autowired
     LineBotService lineBotService;
 
-
-    @Autowired
-    protected WebhookParser webhookParser;
-
-    @RequestMapping(value = "/callback", method = {RequestMethod.GET, RequestMethod.POST})
-    public ResponseEntity<String> handleCallback(
-            @RequestHeader(name = "X-Line-Signature", required = false) String signature,
-            @RequestBody byte[] payload) {
-
-        try {
-            // 使用 WebhookParser 驗證簽名並解析 payload
-            CallbackRequest callbackRequest = webhookParser.handle(signature, payload);
-
-            // 處理成功，回應 200 OK
-            log.info("Webhook events received: {}", callbackRequest.events());
-
-            List<Event> eventList = callbackRequest.events();
-            for(Event event : eventList){
-                System.out.println(event);
-            }
-
-            // 可以進一步處理事件（如 TextMessage 事件等）
-            return ResponseEntity.ok("Webhook processed");
-        } catch (WebhookParseException e) {
-            // 簽名驗證失敗或解析錯誤，回應 400 Bad Request
-            log.error("Webhook parse error: {}", e.getMessage());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        } catch (IOException e) {
-            log.error("I/O error: {}", e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error processing webhook");
-        }
-
-    }
-
-
-
     private TextMessage buildDefaultTextMessage() {
         String replayText = "您好~歡迎您寄信到「服務信箱」\n" +
                 "（）\n" +
