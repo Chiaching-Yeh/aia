@@ -1,27 +1,67 @@
 package com.systex.demo.controller;
 
+
 import com.linecorp.bot.messaging.model.Message;
 import com.linecorp.bot.messaging.model.TextMessage;
+import com.linecorp.bot.parser.WebhookParseException;
+import com.linecorp.bot.parser.WebhookParser;
 import com.linecorp.bot.spring.boot.handler.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.handler.annotation.LineMessageHandler;
-import com.linecorp.bot.webhook.model.Event;
-import com.linecorp.bot.webhook.model.MessageEvent;
-import com.linecorp.bot.webhook.model.Source;
-import com.linecorp.bot.webhook.model.TextMessageContent;
+import com.linecorp.bot.webhook.model.*;
 import com.systex.demo.service.LineBotService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+
+import java.io.IOException;
+import java.util.List;
+
 
 @Slf4j
 @LineMessageHandler
 @RestController
-@RequestMapping("/callback")
 public class LineMessageHandlerController {
 
     @Autowired
     LineBotService lineBotService;
+
+
+    @Autowired
+    protected WebhookParser webhookParser;
+
+    @RequestMapping(value = "/callback", method = {RequestMethod.GET, RequestMethod.POST})
+    public ResponseEntity<String> handleCallback(
+            @RequestHeader(name = "X-Line-Signature", required = false) String signature,
+            @RequestBody byte[] payload) {
+
+        try {
+            // 使用 WebhookParser 驗證簽名並解析 payload
+            CallbackRequest callbackRequest = webhookParser.handle(signature, payload);
+
+            // 處理成功，回應 200 OK
+            log.info("Webhook events received: {}", callbackRequest.events());
+
+            List<Event> eventList = callbackRequest.events();
+            for(Event event : eventList){
+                System.out.println(event);
+            }
+
+            // 可以進一步處理事件（如 TextMessage 事件等）
+            return ResponseEntity.ok("Webhook processed");
+        } catch (WebhookParseException e) {
+            // 簽名驗證失敗或解析錯誤，回應 400 Bad Request
+            log.error("Webhook parse error: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (IOException e) {
+            log.error("I/O error: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error processing webhook");
+        }
+
+    }
+
 
 
     private TextMessage buildDefaultTextMessage() {
@@ -38,6 +78,9 @@ public class LineMessageHandlerController {
 
     @EventMapping
     public Message handleTextMessageEvent(MessageEvent event) throws Exception {
+
+        System.out.println("handleTextMessageEvent st");
+
         // 使用 message() 方法來取得訊息內容
         if (event.message() instanceof TextMessageContent textMessageContent) {
             String receivedMessage = textMessageContent.text();  // 使用 text() 方法來獲取文本
