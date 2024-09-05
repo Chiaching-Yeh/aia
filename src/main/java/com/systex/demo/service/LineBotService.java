@@ -1,13 +1,12 @@
 package com.systex.demo.service;
 
 import com.linecorp.bot.messaging.client.MessagingApiClient;
-import com.linecorp.bot.messaging.model.Message;
-import com.linecorp.bot.messaging.model.ReplyMessageRequest;
-import com.linecorp.bot.messaging.model.TextMessage;
+import com.linecorp.bot.messaging.model.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
+import java.util.UUID;
 import java.util.List;
 
 @Slf4j
@@ -16,6 +15,9 @@ public class LineBotService {
 
     @Autowired
     protected MessagingApiClient messagingApiClient;
+
+    @Value("${line.bot.userId}")
+    private String userId;
 
     /**
      * 回覆訊息給用戶
@@ -52,7 +54,38 @@ public class LineBotService {
                 });
     }
 
+
+    /**
+     * 推送訊息給指定用戶
+     *
+     * @param messageText 要推送的文字訊息
+     */
+    public void pushMessageToUser(String messageText , String pushTo) {
+        // 創建 TextMessage
+        TextMessage textMessage = new TextMessage(messageText);
+        List<Message> messages = List.of(textMessage);
+
+        // 創建 PushMessageRequest
+        PushMessageRequest pushMessageRequest = new PushMessageRequest(pushTo, messages, false,null );
+
+        // 使用 MessagingApiClient 發送推送訊息，並包含 X-Line-Retry-Key
+        UUID retryKey = UUID.randomUUID();
+        messagingApiClient.pushMessage(retryKey, pushMessageRequest)
+                .whenComplete((response, throwable) -> {
+                    if (throwable != null) {
+                        // 處理推送訊息過程中的錯誤
+                        System.err.println("Error while sending push message: " + throwable.getMessage());
+                    } else {
+                        // 成功推送訊息
+                        System.out.println("Successfully sent push message to user: " + pushTo);
+                    }
+                });
+
+    }
+
 }
+
+
 
 
 

@@ -3,21 +3,13 @@ package com.systex.demo.controller;
 
 import com.linecorp.bot.messaging.model.Message;
 import com.linecorp.bot.messaging.model.TextMessage;
-import com.linecorp.bot.parser.WebhookParseException;
-import com.linecorp.bot.parser.WebhookParser;
 import com.linecorp.bot.spring.boot.handler.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.handler.annotation.LineMessageHandler;
 import com.linecorp.bot.webhook.model.*;
 import com.systex.demo.service.LineBotService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-
-import java.io.IOException;
-import java.util.List;
 
 
 @Slf4j
