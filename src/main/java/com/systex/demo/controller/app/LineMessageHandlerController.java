@@ -1,12 +1,12 @@
-package com.systex.demo.controller;
+package com.systex.demo.controller.app;
 
 
-import com.linecorp.bot.messaging.model.Message;
 import com.linecorp.bot.messaging.model.TextMessage;
 import com.linecorp.bot.spring.boot.handler.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.handler.annotation.LineMessageHandler;
 import com.linecorp.bot.webhook.model.*;
 import com.systex.demo.service.LineBotService;
+import com.systex.demo.support.FunctionLogSupport;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -33,37 +33,28 @@ public class LineMessageHandlerController {
     }
 
     @EventMapping
-    public Message handleTextMessageEvent(MessageEvent event) throws Exception {
+    public void handleTextMessageEvent(MessageEvent event) throws Exception {
 
-        System.out.println("handleTextMessageEvent st");
+        FunctionLogSupport.start("handleTextMessageEvent");
 
-        // 使用 message() 方法來取得訊息內容
-        if (event.message() instanceof TextMessageContent textMessageContent) {
-            String receivedMessage = textMessageContent.text();  // 使用 text() 方法來獲取文本
-            log.info("Received message: {}", receivedMessage);
+        final String originalMessageText = ((TextMessageContent) event.message()).text();
+        handleTextContent(event, originalMessageText, event.replyToken());
 
-            // 回覆相同的訊息內容
-//            return new TextMessage("您說了: " + receivedMessage);
-            handleTextContent(event, textMessageContent, event.replyToken());
+        FunctionLogSupport.end("handleTextMessageEvent");
 
-        }
-
-        // 如果不是文字訊息，回覆這段訊息
-        return new TextMessage("目前只支援文字訊息。");
     }
 
 
-    private void handleTextContent(Event event, TextMessageContent content, String replyToken) throws Exception {
+    private void handleTextContent(Event event, String content, String replyToken) throws Exception {
 
         final Source source = event.source();
-        final String text = content.text();
         final String senderId = source.userId();
 
         log.info("source: {}", source);
-        log.info("text: {}", text);
+        log.info("text: {}", content);
         log.info("senderId: {}", senderId);
 
-        lineBotService.replyToUser(replyToken,content.text());
+        lineBotService.replyToUser(replyToken, content);
 
     }
 

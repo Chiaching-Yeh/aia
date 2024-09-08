@@ -2,6 +2,7 @@ package com.systex.demo.configuration;
 
 
 import com.linecorp.bot.messaging.client.MessagingApiClient;
+import com.systex.demo.support.FunctionLogSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

@@ -22,7 +22,7 @@ public class WebSecurityConfiguration  {
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring().requestMatchers(
                 "/static/**",
-                "/favicon.ico",
+//                "/favicon.ico",
                 "/userfiles/**",
                 "/mp3/**"
         );

@@ -22,8 +22,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class AIAExtensionConfiguration implements WebMvcConfigurer {
 
-    @Value("${app.pebble.path}")
-    private String pebblePath;
     
     @Bean
     public PebbleEngine pebbleEngine(ServletContext servletContext) {
@@ -37,7 +35,7 @@ public class AIAExtensionConfiguration implements WebMvcConfigurer {
 
         PebbleViewResolver viewResolver = new PebbleViewResolver(pebbleEngine(servletContext));
 
-        viewResolver.setPrefix(pebblePath + "templates/");
+        viewResolver.setPrefix("templates/");
         viewResolver.setSuffix(".peb,.html");
         viewResolver.setServletContext(servletContext);
 
@@ -56,9 +54,9 @@ public class AIAExtensionConfiguration implements WebMvcConfigurer {
     	
     	FunctionLogSupport.start("AIAExtensionConfiguration.addResourceHandlers");
     	
-        registry.addResourceHandler("/static/**").addResourceLocations("/WEB-INF/classes/static/");
+//        registry.addResourceHandler("/static/**").addResourceLocations("/WEB-INF/classes/static/");
         
-        registry.addResourceHandler("/favicon.ico").addResourceLocations("/WEB-INF/classes/favicon.ico").setCachePeriod(24 * 60 * 60);
+//        registry.addResourceHandler("/favicon.ico").addResourceLocations("/WEB-INF/classes/favicon.ico").setCachePeriod(24 * 60 * 60);
         
         FunctionLogSupport.end("AIAExtensionConfiguration.addResourceHandlers");
         

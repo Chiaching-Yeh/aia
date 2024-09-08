@@ -27,10 +27,13 @@ spring:
     exclude:
       - org.springframework.boot.autoconfigure.gson.GsonAutoConfiguration
 
+  session:
+    store-type: jdbc  # 使用 JDBC 來存儲會話
+
   datasource:
       name: master
       driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
-      jdbc-url: jdbc:sqlserver://localhost:1433;databaseName=motcdb;selectMethod=cursor;socketTimeout=30000;encrypt=true;trustServerCertificate=true;validateServerCertificate=false;
+      jdbc-url: jdbc:sqlserver://localhost:1433;databaseName=aia;selectMethod=cursor;socketTimeout=30000;encrypt=true;trustServerCertificate=true;validateServerCertificate=false;
       username: sa
       password: asas2826
       hikari:
@@ -103,6 +106,10 @@ app:
 
   pebble:
     path: ""
+    suffix: .peb
+    cache: false
+    expose-request-attributes: true
+    expose-session-attributes: false
 
   check:
     apppath: "D:/SystexProject_NCC/bcb16222020005/Frontend/target/classes/templates/module/app/"

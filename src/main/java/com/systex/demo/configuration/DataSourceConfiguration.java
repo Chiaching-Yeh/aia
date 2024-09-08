@@ -35,6 +35,15 @@ public class DataSourceConfiguration {
         return dataSourceTransactionManager;
     }
 
+    @Bean("jdbi")
+    public Jdbi jdbi(@Qualifier ("datasource") DataSource dataSource) {
+        TransactionAwareDataSourceProxy proxy = new TransactionAwareDataSourceProxy(dataSource);
+        Jdbi jdbi = Jdbi.create(proxy);
+
+        jdbi.installPlugin(new SqlObjectPlugin());
+        return jdbi;
+    }
+
 
 
 }
