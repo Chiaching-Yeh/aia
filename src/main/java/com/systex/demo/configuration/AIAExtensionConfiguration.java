@@ -36,7 +36,7 @@ public class AIAExtensionConfiguration implements WebMvcConfigurer {
         PebbleViewResolver viewResolver = new PebbleViewResolver(pebbleEngine(servletContext));
 
         viewResolver.setPrefix("templates/");
-        viewResolver.setSuffix(".peb,.html");
+        viewResolver.setSuffix(".peb");
         viewResolver.setServletContext(servletContext);
 
         FunctionLogSupport.end("AIAExtensionConfiguration.viewResolver");

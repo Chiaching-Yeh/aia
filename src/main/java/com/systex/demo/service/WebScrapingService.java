@@ -9,6 +9,10 @@ import com.systex.demo.dao.WebScrapingInterface;
 import com.systex.demo.model.DataContent;
 import com.systex.demo.model.SourceUrl;
 import lombok.extern.slf4j.Slf4j;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,104 +46,66 @@ public class WebScrapingService {
                 LocalDateTime current = LocalDateTime.now();
 
                 switch (source.getSourceName()) {
-                    case "華爾街日報":
-                        List<HtmlDivision> items = page.getByXPath("//div[@class='css-bdwau6']//div[@class='css-4neukq']//div[@class='css-bdm6mo']//div[@class='e1sf124z9']");
-
-                        if (items != null && !items.isEmpty()) {
-                            for (HtmlDivision item : items) {
-                                // 查找 headerDiv 標題
-                                String wallStreetContent = "";
-                                String wallStreetTitle = "";
-                                HtmlDivision headerDiv = item.getFirstByXPath(".//div[@class='e1sf124z9 css-ga15cm-HeaderBlock']");
-                                if (headerDiv != null) {
-                                    String titleText = headerDiv.getTextContent();
-                                    if (!titleText.isEmpty()) {
-                                        wallStreetTitle = titleText;
-                                        System.out.println("華爾街日報 Title: " + titleText);
-                                    }
-                                } else {
-                                    System.out.println("華爾街日報 headerDiv Element not found");
-                                }
-
-                                // 查找 contentDiv 內容
-                                HtmlDivision contentDiv = item.getFirstByXPath(".//div[@class='css-1f38a5e']");
-                                if (contentDiv != null) {
-                                    String contentText = contentDiv.getTextContent();
-                                    if (!contentText.isEmpty()) {
-                                        wallStreetContent = contentText;
-                                        System.out.println("華爾街日報 Content: " + contentText);
-                                    }
-                                } else {
-                                    System.out.println("華爾街日報 contentDiv Element not found");
-                                }
-
-                                if (!wallStreetContent.isEmpty()) {
-                                    dataContentService.create(param(wallStreetTitle, wallStreetContent, current, source.getSourceName()));
-                                }
-                            }
-                        }
-
-
-                        break;
-
-                    case "紐約時報":
-
-//                        System.out.println("===紐約時報asNormalizedText===");
-                        String asNormalizedText = page.asNormalizedText();
-//                        System.out.println(asNormalizedText);
+//                    case "華爾街日報":
+//                        List<HtmlDivision> items = page.getByXPath("//div[@class='css-bdwau6']//div[@class='css-4neukq']//div[@class='css-bdm6mo']//div[@class='e1sf124z9']");
 //
-//                        System.out.println("===紐約時報pageHtml===");
-                        String pageHtml = page.asXml();  // 獲取頁面的完整 HTML
-//                        System.out.println(pageHtml);
-
-                        // 使用 XPath 查找包含目标内容的 <li> 元素
-                        List<HtmlElement> nytimes = page.getByXPath("//div[@class='css-13mho3u']//div[@id='page-1']//li[@class='css-18yolpw']//div[@class='css-14ee9cx']//article[@class='css-1l4spti']");
-                        System.out.println("nytimes>>>>"+nytimes);
-                        if (nytimes != null && !nytimes.isEmpty()) {
-                            for (HtmlElement item : nytimes) {
-                                // 查找 <h3> 标签的文本 (标题)
-                                HtmlAnchor titleAnchor = item.getFirstByXPath(".//a[@class='css-8hzhxf']//h3[@class='css-1j88qqx e15t083i0']");
-                                if (titleAnchor != null) {
-                                    String titleText = titleAnchor.getTextContent();
-                                    System.out.println("Title: " + titleText);
-                                } else {
-                                    System.out.println("Title not found");
-                                }
-
-                                // 查找 <p> 标签的文本 (内文)
-                                HtmlElement contentParagraph = item.getFirstByXPath(".//p[@class='css-1pga48a e15t083i1']");
-                                if (contentParagraph != null) {
-                                    String contentText = contentParagraph.getTextContent();
-                                    System.out.println("Content: " + contentText);
-                                } else {
-                                    System.out.println("Content not found");
-                                }
-
-                                System.out.println("--------------------------------------");
-                            }
-                        }
-
-//                        String xpath = "//div[contains(@class, 'story-collection__three_columns__2Th0B')]" +
-//                                "//div[contains(@class, 'MediaStoryCard')]" +
-//                                "//div[contains(@class, 'media-story-card__body__3tRWy')]" +
-//                                "//a[@data-testid='Heading']";
-//
-//                        List<HtmlElement> routerItems = page.getFirstByXPath(xpath);
-//
-//                        if (routerItems != null && !routerItems.isEmpty()) {
-//                            for (HtmlElement item : routerItems) {
-//                                String routerTitle = "";
-//                                // 尋找每個元素的 <a> 標籤 (標題)
-//                                HtmlAnchor titleAnchor = item.getFirstByXPath(".//a[@data-testid='Heading']");
-//                                if (titleAnchor != null) {
-//                                    routerTitle = titleAnchor.getTextContent();
-//                                    if (!routerTitle.isEmpty()) {
-//                                        dataContentService.create(param(routerTitle, "", current, source.getSourceName()));
-//                                        System.out.println("路透社 Title: " + routerTitle);
+//                        if (items != null && !items.isEmpty()) {
+//                            for (HtmlDivision item : items) {
+//                                // 查找 headerDiv 標題
+//                                String wallStreetContent = "";
+//                                String wallStreetTitle = "";
+//                                HtmlDivision headerDiv = item.getFirstByXPath(".//div[@class='e1sf124z9 css-ga15cm-HeaderBlock']");
+//                                if (headerDiv != null) {
+//                                    String titleText = headerDiv.getTextContent();
+//                                    if (!titleText.isEmpty()) {
+//                                        wallStreetTitle = titleText;
+//                                        System.out.println("華爾街日報 Title: " + titleText);
 //                                    }
+//                                } else {
+//                                    System.out.println("華爾街日報 headerDiv Element not found");
+//                                }
+//
+//                                // 查找 contentDiv 內容
+//                                HtmlDivision contentDiv = item.getFirstByXPath(".//div[@class='css-1f38a5e']");
+//                                if (contentDiv != null) {
+//                                    String contentText = contentDiv.getTextContent();
+//                                    if (!contentText.isEmpty()) {
+//                                        wallStreetContent = contentText;
+//                                        System.out.println("華爾街日報 Content: " + contentText);
+//                                    }
+//                                } else {
+//                                    System.out.println("華爾街日報 contentDiv Element not found");
+//                                }
+//
+//                                if (!wallStreetContent.isEmpty()) {
+//                                    dataContentService.create(param(wallStreetTitle, wallStreetContent, current, source.getSourceName()));
 //                                }
 //                            }
 //                        }
+//
+//
+//                        break;
+
+                    case "紐約時報":
+
+                        String pageHtml = page.asXml();  // 獲取頁面的完整 HTML
+                        Document doc = Jsoup.parse(pageHtml);
+                        // 選取class為"css-18yolpw"的所有<li>元素
+                        Elements listItems = doc.select("li.css-18yolpw");
+                        for (Element listItem : listItems) {
+                            String nyTimeTitle = "";
+                            String nyTimeContent = "";
+                            // 找到<h3>的標題
+                            nyTimeTitle = listItem.select("h3.css-1j88qqx").text();
+                            // 找到第一個<p>作為內文
+                            nyTimeContent = listItem.select("p.css-1pga48a").text();
+
+                            if (!nyTimeTitle.isEmpty()) {
+                                dataContentService.create(param(nyTimeTitle, nyTimeContent, current, source.getSourceName()));
+                            }
+
+
+                        }
 
                         break;
 
@@ -160,7 +126,6 @@ public class WebScrapingService {
                                 if (titleAnchor != null) {
                                     yahooTitle = titleAnchor.getTextContent();
                                     if (!yahooTitle.isEmpty()) {
-                                        System.out.println("雅虎國際財經 Title: " + yahooTitle);
                                     } else {
                                         //
                                     }
@@ -171,7 +136,6 @@ public class WebScrapingService {
                                 if (paragraph != null) {
                                     yahooContent = paragraph.getTextContent();
                                     if (!yahooContent.isEmpty()) {
-                                        System.out.println("雅虎國際財經 paragraph: " + yahooContent);
                                     } else {
                                         //
                                     }
@@ -189,7 +153,6 @@ public class WebScrapingService {
                 }
 
             }
-
 
         } catch (Exception e) {
             e.printStackTrace();

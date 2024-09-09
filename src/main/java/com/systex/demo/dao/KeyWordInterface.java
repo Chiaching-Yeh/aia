@@ -1,8 +1,7 @@
 package com.systex.demo.dao;
 
 
-import com.systex.demo.model.Category;
-import com.systex.demo.model.SourceUrl;
+import com.systex.demo.model.KeyWord;
 import org.jdbi.v3.core.Handle;
 import org.jdbi.v3.core.mapper.reflect.BeanMapper;
 import org.jdbi.v3.core.statement.Query;
@@ -11,14 +10,14 @@ import org.jdbi.v3.sqlobject.SqlObject;
 import java.util.List;
 
 
-public interface CatagoryInterface extends SqlObject {
+public interface KeyWordInterface extends SqlObject {
 
-	default List<Category> findALl() {
+	default List<KeyWord> findALl() {
 		try (Handle handle = getHandle()) {
-			handle.registerRowMapper(BeanMapper.factory(Category.class));
-			String sql = "SELECT * FROM CATEGORY";
+			handle.registerRowMapper(BeanMapper.factory(KeyWord.class));
+			String sql = "SELECT * FROM KEYWORD";
 			Query query = handle.createQuery(sql);
-			return query.mapTo(Category.class).list();
+			return query.mapTo(KeyWord.class).list();
 		}
 	}
 	

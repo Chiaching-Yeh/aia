@@ -7,11 +7,8 @@ import lombok.Setter;
 @Data
 @Getter
 @Setter
-public class Category {
+public class KeyWord {
 
-    int id;
-    String category;
-    String subCatagory;
-
+    String keyword;
 
 }

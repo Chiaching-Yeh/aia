@@ -5,7 +5,9 @@ import com.linecorp.bot.messaging.model.TextMessage;
 import com.linecorp.bot.spring.boot.handler.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.handler.annotation.LineMessageHandler;
 import com.linecorp.bot.webhook.model.*;
+import com.systex.demo.model.User;
 import com.systex.demo.service.LineBotService;
+import com.systex.demo.service.UserService;
 import com.systex.demo.support.FunctionLogSupport;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,9 @@ public class LineMessageHandlerController {
     @Autowired
     LineBotService lineBotService;
 
+    @Autowired
+    UserService userService;
+
     private TextMessage buildDefaultTextMessage() {
         String replayText = "您好~歡迎您寄信到「服務信箱」\n" +
                 "（）\n" +
@@ -32,6 +37,11 @@ public class LineMessageHandlerController {
                 .build();
     }
 
+    /**
+     * MessageEvent
+     * @param event
+     * @throws Exception
+     */
     @EventMapping
     public void handleTextMessageEvent(MessageEvent event) throws Exception {
 
@@ -42,6 +52,23 @@ public class LineMessageHandlerController {
 
         FunctionLogSupport.end("handleTextMessageEvent");
 
+    }
+
+    /**
+     * followEvent
+     * @param event
+     * 在這裡可以執行保存 userId 的邏輯或進行其他處理
+     */
+    // 處理 Follow 事件
+    @EventMapping
+    public void handleFollowEvent(FollowEvent event) {
+//        String userId = event.getSource().getUserId();
+        String userId = event.source().userId();
+        User user = new User();
+        log.info("User followed: {}", userId);
+        user.setUserid(userId);
+        userService.create(user);
+        // 在這裡可以執行保存 userId 的邏輯或進行其他處理
     }
 
 

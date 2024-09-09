@@ -2,11 +2,13 @@ package com.systex.demo.service;
 
 import com.theokanning.openai.OpenAiHttpException;
 import com.theokanning.openai.completion.chat.ChatCompletionRequest;
+import com.theokanning.openai.completion.chat.ChatCompletionResult;
 import com.theokanning.openai.completion.chat.ChatMessage;
 import com.theokanning.openai.completion.chat.ChatMessageRole;
 import com.theokanning.openai.service.OpenAiService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.json.JsonParseException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,9 +34,9 @@ public class OpenAiGptService {
 
 
     @Transactional
-    public ChatMessage connectOPENAI(String userSettingStr, String[] data, String[] keywords) {
+    public StringBuilder connectOPENAI(String userSettingStr, String[] data, String[] keywords) {
 
-        ChatMessage responseMessage = null;
+        StringBuilder stringBuilder = null;
 
         try {
 
@@ -42,12 +44,17 @@ public class OpenAiGptService {
             ChatMessage systemMessage = new ChatMessage(ChatMessageRole.SYSTEM.value(), systemSetting);
             messages.add(systemMessage);
 
-            StringBuilder userSetting = new StringBuilder();
+            StringBuilder userSetting;
             if (!userSettingStr.isEmpty()) {
                 userSetting = new StringBuilder(userSettingStr);
             } else {
                 userSetting = new StringBuilder(defaultString);
-                userSetting.append("Based on the source following information[").append(Arrays.toString(data)).append("] and financial-related keywords[").append(Arrays.toString(keywords)).append("]summarize how global stock markets are impacting today's operation of the Taiwan stock market, and provide the best trends and recommendations\n.");
+                userSetting.append("Based on the following source information [")
+                        .append(Arrays.toString(data))
+                        .append("] and financial-related keywords [")
+                        .append(Arrays.toString(keywords))
+                        .append("], summarize how global stock markets are impacting today's operation of the Taiwan stock market, and provide the best trends and recommendations.")
+                        .append("Limit the response to a maximum of 400 words.");
             }
 
             ChatMessage userMessage = new ChatMessage(ChatMessageRole.USER.value(), userSetting.toString());
@@ -58,31 +65,136 @@ public class OpenAiGptService {
                     .model("gpt-4o")
                     .messages(messages)
                     .n(1)
-                    .stream(true)
-                    .maxTokens(500)
+                    .stream(false)
+                    .maxTokens(1000)
                     .logitBias(new HashMap<>())
                     .build();
 
-            responseMessage = openAiService.createChatCompletion(chatCompletionRequest).getChoices().get(0).getMessage();
+            // 發送請求並接收回應
+            ChatCompletionResult response = openAiService.createChatCompletion(chatCompletionRequest);
 
-            System.out.println("responseMessage>" + responseMessage);
-
-            return responseMessage;
+            // 處理回應
+            if (response != null && !response.getChoices().isEmpty()) {
+                ChatMessage completionMessage = response.getChoices().get(0).getMessage();
+                stringBuilder = new StringBuilder(completionMessage.getContent());
+                System.out.println("AI Response: " + completionMessage.getContent());
+            } else {
+                System.out.println("No response from OpenAI");
+            }
 
         } catch (OpenAiHttpException e) {
             log.error("Error occurred while creating completion: ", e);
         }
 
-        return responseMessage;
+        return stringBuilder;
 
     }
 
-    public HashMap<String,Object> paramsSetting (String data, String keyWord){
-        HashMap pramaMap = new HashMap();
+    @Transactional
+    public StringBuilder testOPENAI() {
+
+        StringBuilder stringBuilder = null;
+
+        try {
+
+            List<ChatMessage> messages = new ArrayList<>();
+            ChatMessage systemMessage = new ChatMessage(ChatMessageRole.SYSTEM.value(), systemSetting);
+            messages.add(systemMessage);
+
+            StringBuilder userSetting;
+
+            String[] data = {"Global market data"};
+            String[] keywords = {"stock", "trend"};
+
+            userSetting = new StringBuilder(defaultString);
+            userSetting.append("Based on the following source information [")
+                    .append(Arrays.toString(data))
+                    .append("] and financial-related keywords [")
+                    .append(Arrays.toString(keywords))
+                    .append("], summarize how global stock markets are impacting today's operation of the Taiwan stock market, and provide the best trends and recommendations.")
+                    .append("Limit the response to a maximum of 400 words.");
 
 
-        return pramaMap;
+            ChatMessage userMessage = new ChatMessage(ChatMessageRole.USER.value(), userSetting.toString());
+            messages.add(userMessage);
+
+            ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
+                    .builder()
+                    .model("gpt-4o")
+                    .messages(messages)
+                    .n(1)
+                    .stream(false)
+                    .maxTokens(1000)
+                    .logitBias(new HashMap<>())
+                    .build();
+
+            // 發送請求並接收回應
+            ChatCompletionResult response = openAiService.createChatCompletion(chatCompletionRequest);
+
+            // 處理回應
+            if (response != null && !response.getChoices().isEmpty()) {
+                ChatMessage completionMessage = response.getChoices().get(0).getMessage();
+                stringBuilder = new StringBuilder(completionMessage.getContent());
+            } else {
+                System.out.println("No response from OpenAI");
+            }
+
+        } catch (OpenAiHttpException e) {
+            log.error("Error occurred while creating completion: ", e);
+        }
+
+        return stringBuilder;
+
     }
+
+    @Transactional
+    public StringBuilder easyTestOPENAI() {
+
+        StringBuilder stringBuilder = null;
+
+        try {
+
+            List<ChatMessage> messages = new ArrayList<>();
+            ChatMessage systemMessage = new ChatMessage(ChatMessageRole.SYSTEM.value(), "you are a nice person");
+            messages.add(systemMessage);
+
+            StringBuilder userSetting;
+
+            userSetting = new StringBuilder("");
+            userSetting.append("introduce yourself with 50 words");
+
+            ChatMessage userMessage = new ChatMessage(ChatMessageRole.USER.value(), userSetting.toString());
+            messages.add(userMessage);
+
+            ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
+                    .builder()
+                    .model("gpt-4o")
+                    .messages(messages)
+                    .n(1)
+                    .stream(false)
+                    .maxTokens(500)
+                    .logitBias(new HashMap<>())
+                    .build();
+
+            // 發送請求並接收回應
+            ChatCompletionResult response = openAiService.createChatCompletion(chatCompletionRequest);
+
+            // 處理回應
+            if (response != null && !response.getChoices().isEmpty()) {
+                ChatMessage completionMessage = response.getChoices().get(0).getMessage();
+                stringBuilder = new StringBuilder(completionMessage.getContent());
+            } else {
+                System.out.println("No response from OpenAI");
+            }
+
+        } catch (OpenAiHttpException e) {
+            log.error("Error occurred while creating completion: ", e);
+        }
+
+        return stringBuilder;
+
+    }
+
 
 
 

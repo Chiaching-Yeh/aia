@@ -1,45 +1,125 @@
 package com.systex.demo.controller.app;
 
-import com.systex.demo.service.LineBotService;
-import com.systex.demo.service.WebScrapingService;
-import com.theokanning.openai.service.OpenAiService;
+import com.systex.demo.service.*;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import java.io.IOException;
+import java.time.LocalDateTime;
 
 @Slf4j
-@RestController
+@Controller
 public class OpenAiGptController {
 
-    @Autowired
-    OpenAiService openAiService;
+    @Value("${line.bot.userId}")
+    private String userId;
 
     @Autowired
     WebScrapingService webScrapingService;
 
     @Autowired
+    OpenAiGptService openAiGptService;
+
+    @Autowired
+    KeyWordService keyWordService;
+
+    @Autowired
+    DataContentService dataContentService;
+
+    @Autowired
     LineBotService lineBotService;
 
-
-    public String createResponse() {
-
+    @RequestMapping(value = "/api/v1/pushLineMessage", method = RequestMethod.GET)
+    public String pushLineMessage(final HttpServletRequest request, final ModelMap model) throws IOException {
 
         try {
-            // 將 webCrawler並擷取片段資料存進資料庫
+            // 先清空資料庫
+            dataContentService.destroy();
 
-            // 將資料庫內片段撈出
+            // 網頁抓取到的內容寫入資料庫
+            webScrapingService.doWebScrapping();
 
-            // 將關鍵字撈出
+            // 關鍵字
+            String[] keyword = keyWordService.findAll();
 
+            // 資料
+            String[] data = dataContentService.findEverySourceTop5();
+
+            // 串接 openai api
+            StringBuilder response = openAiGptService.connectOPENAI("", data, keyword);
+
+            // 推播 LINE
+            lineBotService.pushMessageToUser(response.toString(), userId);
+
+            model.addAttribute("status","OK!");
+            model.addAttribute("aiResponse", response.toString());
+            model.addAttribute("current", LocalDateTime.now());
 
         } catch (Exception e) {
-            log.error("Error occurred while creating completion: ", e);
+            log.info("status",e.getMessage());
+            model.addAttribute("status",e.getMessage());
         }
 
-        return "/index";
-
+        return "gpt";
 
     }
+
+    @RequestMapping(value = "/api/v1/pushLineMessageTest", method = RequestMethod.GET)
+    public String pushLineMessageTest(final HttpServletRequest request, final ModelMap model) throws IOException {
+
+        try {
+            // 先清空資料庫
+            dataContentService.destroy();
+
+            // 串接 openai api
+            StringBuilder response = openAiGptService.testOPENAI();
+
+            // 推播 LINE
+            lineBotService.pushMessageToUser(response.toString(), userId);
+
+            model.addAttribute("status","OK!");
+            model.addAttribute("aiResponse", response.toString());
+            model.addAttribute("current", LocalDateTime.now());
+
+        } catch (Exception e) {
+            log.info("status",e.getMessage());
+            model.addAttribute("status",e.getMessage());
+        }
+
+        return "gpt";
+
+    }
+
+
+    @RequestMapping(value = "/api/v1/pushLineMessageEasyTest", method = RequestMethod.GET)
+    public String pushLineMessageEasyTest(final HttpServletRequest request, final ModelMap model) throws IOException {
+
+        try {
+            // 串接 openai api
+            StringBuilder response = openAiGptService.easyTestOPENAI();
+
+            // 推播 LINE
+            lineBotService.pushMessageToUser(response.toString(), userId);
+
+            model.addAttribute("status","OK!");
+            model.addAttribute("aiResponse", response.toString());
+            model.addAttribute("current", LocalDateTime.now());
+
+        } catch (Exception e) {
+            log.info("status",e.getMessage());
+            model.addAttribute("status",e.getMessage());
+        }
+
+        return "gpt";
+
+    }
+
 
 
 

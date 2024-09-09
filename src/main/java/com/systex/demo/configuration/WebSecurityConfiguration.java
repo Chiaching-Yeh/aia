@@ -1,6 +1,10 @@
 package com.systex.demo.configuration;
 
 import com.systex.demo.support.FunctionLogSupport;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -12,10 +16,14 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.header.HeaderWriterFilter;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import java.io.IOException;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
+//@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 public class WebSecurityConfiguration  {
 
     @Bean
@@ -46,6 +54,16 @@ public class WebSecurityConfiguration  {
         );
 
         http.csrf(AbstractHttpConfigurer::disable);
+
+        // 打印所有的過濾器，確認 HeaderWriterFilter 是否在干擾過程中
+        http.addFilterBefore(new OncePerRequestFilter() {
+            @Override
+            protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+                System.out.println("Before processing request: " + request.getRequestURI());
+                filterChain.doFilter(request, response);
+                System.out.println("After processing request: " + request.getRequestURI());
+            }
+        }, HeaderWriterFilter.class);
 
         FunctionLogSupport.end("WebSecurityConfiguration.configure");
 

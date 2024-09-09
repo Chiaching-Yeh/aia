@@ -2,7 +2,6 @@ package com.systex.demo.dao;
 
 
 import com.systex.demo.model.DataContent;
-import com.systex.demo.model.SourceUrl;
 import org.jdbi.v3.core.Handle;
 import org.jdbi.v3.core.mapper.reflect.BeanMapper;
 import org.jdbi.v3.core.statement.Query;
@@ -13,10 +12,27 @@ import java.util.List;
 
 public interface DataContentInterface extends SqlObject {
 
-	default List<DataContent> findALl() {
+	default List<DataContent> findAll() {
 		try (Handle handle = getHandle()) {
 			handle.registerRowMapper(BeanMapper.factory(DataContent.class));
-			String sql = "SELECT * FROM DATACONTENT";
+			String sql = "SELECT * FROM DATACONTENT TOP 10";
+			Query query = handle.createQuery(sql);
+			return query.mapTo(DataContent.class).list();
+		}
+	}
+
+	default List<DataContent> findEverySourceTop5() {
+		try (Handle handle = getHandle()) {
+			handle.registerRowMapper(BeanMapper.factory(DataContent.class));
+			String sql = "WITH RankedData AS (\n" +
+					"    SELECT *,\n" +
+					"           ROW_NUMBER() OVER (PARTITION BY SOURCE ORDER BY CREATEDATETIME DESC) AS RowNum\n" +
+					"    FROM DATACONTENT\n" +
+					")\n" +
+					"SELECT * \n" +
+					"FROM RankedData\n" +
+					"WHERE RowNum <= 5\n" +
+					"ORDER BY SOURCE, CREATEDATETIME DESC;";
 			Query query = handle.createQuery(sql);
 			return query.mapTo(DataContent.class).list();
 		}
@@ -29,6 +45,13 @@ public interface DataContentInterface extends SqlObject {
 					+ "VALUES (:title, :dataContentDetail, :createDateTime, :source)";
 
 			return handle.createUpdate(sql).bindBean(dataContent).execute();
+		}
+	}
+
+	default Integer destroy() {
+		try (Handle handle = getHandle()) {
+			String sql = " DELETE FROM DATACONTENT ";
+			return handle.createUpdate(sql).execute();
 		}
 	}
 	

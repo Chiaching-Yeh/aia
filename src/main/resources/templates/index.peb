@@ -2,10 +2,59 @@
 <html>
 <head>
     <title>Index Page</title>
+    <style>
+    /* 針對整個容器的樣式 */
+    .info-container {
+        font-family: Arial, sans-serif; /* 調整字體 */
+        margin: 20px; /* 增加外部間距 */
+        padding: 20px; /* 增加內部填充 */
+        border: 1px solid #ddd; /* 增加邊框 */
+        border-radius: 8px; /* 邊角圓滑 */
+        background-color: #f9f9f9; /* 背景顏色 */
+    }
+
+    /* 調整段落的間距 */
+    .info-container p {
+        margin-bottom: 10px; /* 段落之間的間距 */
+        font-size: 16px; /* 調整字體大小 */
+    }
+
+    /* 鏈接容器 */
+    .link-container {
+        margin-top: 20px; /* 增加與上方信息的距離 */
+    }
+
+    /* 鏈接按鈕樣式 */
+    .btn-link {
+        display: block; /* 讓每個按鈕獨占一行 */
+        text-decoration: none; /* 去掉預設的下劃線 */
+        background-color: #007bff; /* 設置背景色 */
+        color: white; /* 設置文字顏色 */
+        padding: 10px 20px; /* 調整按鈕內部間距 */
+        margin-bottom: 10px; /* 按鈕之間的間距 */
+        border-radius: 5px; /* 調整按鈕的圓角 */
+        text-align: center; /* 讓文字居中 */
+        font-size: 16px; /* 調整字體大小 */
+        transition: background-color 0.3s ease; /* 增加背景色變化的過渡效果 */
+    }
+
+    /* 鏈接按鈕的 hover 效果 */
+    .btn-link:hover {
+        background-color: #0056b3; /* 當鼠標懸停時改變背景色 */
+    }
+
+    </style>
 </head>
 <body>
     <h1>Welcome to the Index Page</h1>
-    <p>Login Time: {{ localTime }}</p>
-    <p>IP Address: {{ ip }}</p>
+    <div class="info-container">
+        <p>IP: {{ ip }}</p>
+        <p>Time: {{ localTime }}</p>
+        <div class="link-container">
+            <a href="{{ href('/api/v1/pushLineMessage') }}" class="btn-link">正式</a>
+            <a href="{{ href('/api/v1/pushLineMessageTest') }}" class="btn-link">測試-預設條件</a>
+            <a href="{{ href('/api/v1/pushLineMessageEasyTest') }}" class="btn-link">測試-簡易少字測試</a>
+        </div>
+    </div>
 </body>
 </html>

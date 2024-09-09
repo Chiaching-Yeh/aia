@@ -26,7 +26,7 @@ public class LineMessageApiController {
      *
      * @return 回傳推送結果
      */
-    @GetMapping("/api/v1/push")
+    @GetMapping("/api/v1/pushTest")
     public String pushMessageToUser() {
         try {
             LocalDateTime current = LocalDateTime.now();

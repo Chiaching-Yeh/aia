@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Slf4j
-@RestController
+@Controller
 public class IndexController {
 
     @GetMapping("/index")
