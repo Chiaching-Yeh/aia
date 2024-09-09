@@ -49,12 +49,19 @@ public class OpenAiGptService {
                 userSetting = new StringBuilder(userSettingStr);
             } else {
                 userSetting = new StringBuilder(defaultString);
-                userSetting.append("Based on the following source information [")
+//                userSetting.append("Based on the following source information [")
+//                        .append(Arrays.toString(data))
+//                        .append("] and financial-related keywords [")
+//                        .append(Arrays.toString(keywords))
+//                        .append("], summarize how global stock markets are impacting today's operation of the Taiwan stock market, and provide the best trends and recommendations.")
+//                        .append("Limit the response to a maximum of 400 words.");
+                userSetting.append("Based on the provided source information [")
                         .append(Arrays.toString(data))
-                        .append("] and financial-related keywords [")
+                        .append("] and the identified financial-related keywords [")
                         .append(Arrays.toString(keywords))
-                        .append("], summarize how global stock markets are impacting today's operation of the Taiwan stock market, and provide the best trends and recommendations.")
-                        .append("Limit the response to a maximum of 400 words.");
+                        .append("], summarize how global stock markets, particularly the U.S. market, are influencing the current performance of Taiwan's stock market. ")
+                        .append("Additionally, provide insights into the best market trends and recommendations. ")
+                        .append("Please limit the response to a maximum of 400 words.");
             }
 
             ChatMessage userMessage = new ChatMessage(ChatMessageRole.USER.value(), userSetting.toString());
@@ -107,12 +114,13 @@ public class OpenAiGptService {
             String[] keywords = {"stock", "trend"};
 
             userSetting = new StringBuilder(defaultString);
-            userSetting.append("Based on the following source information [")
+            userSetting.append("Based on the provided source information [")
                     .append(Arrays.toString(data))
-                    .append("] and financial-related keywords [")
+                    .append("] and the identified financial-related keywords [")
                     .append(Arrays.toString(keywords))
-                    .append("], summarize how global stock markets are impacting today's operation of the Taiwan stock market, and provide the best trends and recommendations.")
-                    .append("Limit the response to a maximum of 400 words.");
+                    .append("], summarize how global stock markets, particularly the U.S. market, are influencing the current performance of Taiwan's stock market. ")
+                    .append("Additionally, provide insights into the best market trends and recommendations. ")
+                    .append("Please limit the response to a maximum of 400 words.");
 
 
             ChatMessage userMessage = new ChatMessage(ChatMessageRole.USER.value(), userSetting.toString());

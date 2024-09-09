@@ -53,12 +53,13 @@ public class OpenAiGptController {
 
             // 串接 openai api
             StringBuilder response = openAiGptService.connectOPENAI("", data, keyword);
+            String formattedResponse = response.toString().replace("\n", "<br>");
 
             // 推播 LINE
             lineBotService.pushMessageToUser(response.toString(), userId);
 
             model.addAttribute("status","OK!");
-            model.addAttribute("aiResponse", response.toString());
+            model.addAttribute("aiResponse", formattedResponse);
             model.addAttribute("current", LocalDateTime.now());
 
         } catch (Exception e) {
@@ -80,11 +81,13 @@ public class OpenAiGptController {
             // 串接 openai api
             StringBuilder response = openAiGptService.testOPENAI();
 
+            String formattedResponse = response.toString().replace("\n", "<br>");
+
             // 推播 LINE
             lineBotService.pushMessageToUser(response.toString(), userId);
 
             model.addAttribute("status","OK!");
-            model.addAttribute("aiResponse", response.toString());
+            model.addAttribute("aiResponse", formattedResponse);
             model.addAttribute("current", LocalDateTime.now());
 
         } catch (Exception e) {
@@ -106,9 +109,10 @@ public class OpenAiGptController {
 
             // 推播 LINE
             lineBotService.pushMessageToUser(response.toString(), userId);
+            String formattedResponse = response.toString().replace("\n", "<br>");
 
             model.addAttribute("status","OK!");
-            model.addAttribute("aiResponse", response.toString());
+            model.addAttribute("aiResponse", formattedResponse);
             model.addAttribute("current", LocalDateTime.now());
 
         } catch (Exception e) {

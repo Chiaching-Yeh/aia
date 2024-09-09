@@ -44,7 +44,7 @@
     <div class="info-container">
     <p>Status: {{ status }}</p>
     <div class="response-container">
-        <p>{{ aiResponse }}</p>
+        <p>{{ aiResponse | raw }}</p>
     </div>
     <p>Current time: {{ current }}</p>
     </div>
