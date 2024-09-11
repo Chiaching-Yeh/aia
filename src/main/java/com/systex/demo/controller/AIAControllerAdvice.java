@@ -1,23 +1,14 @@
 package com.systex.demo.controller;
 
-import java.beans.PropertyEditorSupport;
-import java.time.Duration;
-import java.time.Instant;
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-
 import com.systex.demo.support.FunctionLogSupport;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.ui.ModelMap;
-import org.springframework.util.AntPathMatcher;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -25,8 +16,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.unbescape.html.HtmlEscape;
 import org.unbescape.html.HtmlEscapeLevel;
 import org.unbescape.html.HtmlEscapeType;
-import com.google.common.collect.Lists;
-import lombok.extern.slf4j.Slf4j;
+
+import java.beans.PropertyEditorSupport;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Slf4j
 @ControllerAdvice

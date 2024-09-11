@@ -3,9 +3,6 @@ package com.systex.demo.support;
 import javax.net.ssl.*;
 import java.security.KeyStore;
 import java.security.SecureRandom;
-import java.security.Security;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
 
 public class TrustCertificateSupport {
     // trusting all certificate
