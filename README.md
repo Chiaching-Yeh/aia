@@ -22,3 +22,8 @@ AI跨境新聞快報資訊推播系統是一個基於 Java 開發的自動化財
 - 即時推送：整合 LINE Messaging API
 
 [專案詳細介紹](/doc/AI跨境新聞快報.pdf) 
+
+#### 補充
+
+- 本機器測試請搭配OPENAIKEY 
+- 本地測試請使用ngrok將localhost服務對外，需產生對應url並更新至lineOA webhook
